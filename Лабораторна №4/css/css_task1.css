@@ -1,0 +1,15 @@
+div
+{
+  width: 0;
+  height: 0;
+  border-left: 100px solid transparent;
+  border-right: 100px solid transparent;
+  border-bottom: 150px solid red;
+}
+.triangleup
+{
+  transition-duration: 3s;
+  transition-timing-function:ease-out; 
+}
+.triangleup:hover {
+  transform: rotate(360deg);

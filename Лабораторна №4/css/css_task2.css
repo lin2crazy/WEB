@@ -1,0 +1,11 @@
+.droplet {
+  background: mediumaquamarine;
+  width: 200px;
+  height: 200px;
+  background: red;
+  transition: all 2s;
+  transition-timing: ease-in-out;
+
+}
+.droplet:hover {
+  transform: rotateX(45deg);

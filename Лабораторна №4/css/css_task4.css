@@ -1,0 +1,21 @@
+#square 
+{
+    width: 200px;
+    height: 200px;
+    border-radius: 15px;
+    background: aqua;
+    margin: 50px;
+}
+
+@keyframes square
+{
+  0%  {background: #FF0000}
+  5%  {background: #00FF00}
+  50% {background: #FF1493}
+  95% {background: #0000FF}
+  100%{background: #EE82EE}
+}
+
+#square:hover
+{
+	animation: square 1.5s

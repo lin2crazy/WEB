@@ -1,0 +1,42 @@
+@keyframes slide 
+{
+  0% 
+  {
+    background: blue;
+    left: 0;
+    top: 0;
+  }
+  50% 
+  {
+    background: purple;
+    transform: scale(1.5);
+    transition-timing-function: ease-in;
+    transition-duration: 1;
+    left: 350px;
+    top: 200px;
+  }
+  100% 
+  {
+    background: orange;
+    left: 750px;
+    top: 0;
+  }
+}
+.TriangleUp:hover
+{
+  animation-name: slide;
+  animation-duration: 1.2s;
+  animation-timing-function: ease;
+  animation-delay: 0.5s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+.TriangleUp
+{
+  width: 0;
+  height: 0;
+  border-left: 100px solid transparent;
+  border-right: 100px solid transparent;
+  border-bottom: 150px solid yellow;
+  position: relative;
+}
