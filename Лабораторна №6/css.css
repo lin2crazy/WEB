@@ -1,0 +1,58 @@
+img.rot {
+    animation: 0.8s linear 0s normal none infinite running rot;
+    width: 50px;
+  }
+  @keyframes rot {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  @-webkit-keyframes rot {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  @media (min-width: 800px) {
+    #conteiner{grid-template-columns: repeat(4, 1fr);}
+  }
+  @media (max-width: 800px) {
+    #conteiner{grid-template-columns: repeat(3, 1fr);}
+  }
+  @media (max-width: 600px) {
+    #conteiner{grid-template-columns: repeat(2, 1fr);}
+  }
+  @media (max-width: 500px) {
+    #conteiner{grid-template-columns: repeat(1, 1fr);}
+  }
+#conteiner
+{
+    display:grid;
+    grid-gap: 50px;
+}
+#BigPicture
+{
+    position: absolute;
+    top:0;
+}
+ .hide-block{
+  opacity:0; 
+  transition: 1s; 
+}
+.show-block{
+  opacity:1; 
+  transition: 1s; 
+}
+#BigPicture {
+  position: absolute;
+  top: 0;
+  display: flex;
+  width: 100%;
+}
+#BigPicture img{margin: auto;}
