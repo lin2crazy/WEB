@@ -1,0 +1,27 @@
+table {
+  font-size: 14px;
+  background: white;
+  max-width: 50%;
+  width: 50%;
+  border-collapse: collapse;
+  text-align: left;
+  margin: 0 auto;
+}
+th {
+  font-weight: normal;
+  color: #039;
+  border-bottom: 2px solid #6678b1;
+  padding: 10px 8px;
+}
+td {
+  color: #669;
+  padding: 9px 8px;
+  transition: .3s linear;
+}
+tr:hover td {color: #6699ff;}
+
+#update {
+    text-align: center;
+    margin: 50px auto;
+    color: #039;
+}
