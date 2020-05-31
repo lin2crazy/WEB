@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>My React Gallery</title>
+    <link rel="stylesheet" href="style.css">
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+</head>
+<body>
+
+<div id="app"></div>
+
+<script type="text/babel">
+
+const { createElement, Component } = React;
+const { render } = ReactDOM;
+
+function mod(a, b) {
+    return ((a % b) + b) % b;
+}
+
+class MyAddImageModal extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return (
+            <div className="modal-mask">
+                <div className="modal-wrapper">
+                    <div className="modal-container">
+                        <div className="modal-header">
+                            <h3>Add Image</h3>
+                        </div>
+                        <div className="modal-body">
+                            <div>
+                                <input type="file" onChange={this.props.onFileChange}/>
+                            </div>
+                        </div>
+                        <div className="modal-footer">
+                            <div style={{height: '18px'}}>
+                                <button className="modal-default-button" onClick={this.props.onCancel}>
+                                    Cancel
+                                </button>
+                                <button className="modal-default-button" onClick={this.props.onAdd} disabled={this.props.addDisabled}>
+                                    Add
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+}
+
+class MyPreview extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return (
+            <div className="modal-mask">
+                <div className="modal-wrapper" onClick={this.props.onExit}>
+                    <div className="preview-container">
+                        <img src={this.props.url1} onClick={(e) => { e.stopPropagation(); this.props.onPrev(); }}/>
+                        <img src={this.props.url2} onClick={(e) => { e.stopPropagation(); this.props.onExit(); }} style={{width: '30%'}}/>
+                        <img src={this.props.url3} onClick={(e) => { e.stopPropagation(); this.props.onNext(); }}/>
+                        <p><a href="#" onClick={(e) => { e.preventDefault(); e.stopPropagation(); this.props.onRemove(); }}>Remove</a></p>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+}
+
+class MyImage extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return (
+            <div className="image-container">
+                <img src={this.props.url} onClick={this.props.onClick}/>
+            </div>
+        );
+    }
+}
+
+class MyApp extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            showModal: false,
+            modalFile: null,
+            urls: [
+                'resources/001.png',
+                'resources/004.png',
+                'resources/007.png',
+                'resources/025.png',
+                'resources/039.png',
+                'resources/069.png',
+                'resources/079.png',
+                'resources/132.png',
+            ],
+            showPreview: false,
+            idx1: -1,
+            idx2: -1,
+            idx3: -1,
+        };
+    }
+
+    render() {
+        return (
+            <div>
+                <button
+                    onClick={() => { this.setState({ modalFile: null, showModal: true }); }}
+                >
+                    Add Image
+                </button>
+
+                <div className="gallery-container">
+                    {
+                        this.state.urls.map(url =>
+                            <MyImage key={url} url={url} onClick={() => this.preview(url)}/>
+                        )
+                    }
+                </div>
+
+                {this.state.showPreview &&
+                    <MyPreview
+                        url1={this.state.urls[this.state.idx1]}
+                        url2={this.state.urls[this.state.idx2]}
+                        url3={this.state.urls[this.state.idx3]}
+                        onPrev={() => this.previewPrev()}
+                        onNext={() => this.previewNext()}
+                        onRemove={() => this.previewRemove()}
+                        onExit={() => this.previewExit()}
+                    />
+                }
+
+                {this.state.showModal &&
+                    <MyAddImageModal
+                        onFileChange={(e) => this.onFileChange(e)}
+                        onCancel={() => this.setState({showModal: false})}
+                        onAdd={() => this.modalAdd()}
+                        addDisabled={this.state.modalFile == null}
+                    />
+                }
+            </div>
+        );
+    }
+
+    onFileChange(event) {
+        const modalFile = event.target.files[0];
+        this.setState((state) => ({
+             modalFile
+        }));
+    }
+
+    modalAdd() {
+        this.setState((state) => ({
+             urls: [...state.urls, URL.createObjectURL(state.modalFile)],
+             showModal: false
+        }));
+    }
+
+    preview(url) {
+        this.setState((state) => {
+            const idx2 = state.urls.indexOf(url);
+            return {
+                idx1: mod(idx2 - 1, state.urls.length),
+                idx2,
+                idx3: mod(idx2 + 1, state.urls.length),
+                showPreview: true
+            };
+        });
+    }
+
+    previewPrev() {
+        this.setState((state) => ({
+            idx1: mod(state.idx1 - 1, state.urls.length),
+            idx2: mod(state.idx2 - 1, state.urls.length),
+            idx3: mod(state.idx3 - 1, state.urls.length)
+        }));
+    }
+
+    previewNext() {
+        this.setState((state) => ({
+            idx1: mod(state.idx1 + 1, state.urls.length),
+            idx2: mod(state.idx2 + 1, state.urls.length),
+            idx3: mod(state.idx3 + 1, state.urls.length)
+        }));
+    }
+
+    previewRemove() {
+        this.setState((state) => ({
+            urls: state.urls.filter((_, i) => i != state.idx2),
+            showPreview: false
+        }));
+    }
+
+    previewExit() {
+        this.setState((state) => ({
+            showPreview: false
+        }));
+    }
+}
+
+render(createElement(MyApp), document.querySelector('#app'));
+
+
+</script>
+</body>
+
+</html>
